@@ -2,7 +2,7 @@
 MSAN 622 Information Visualization
 ==================================
 
-|  **Name:** | Sophie Engle           |
+|  **Name:** | Patrick Howell        |
 |-----------:|:-----------------------|
 | **Email:** | <pdhowell@usfca.edu> |
 |   **Web:** | <> |
