@@ -1,0 +1,105 @@
+<style>
+.chart div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}
+</style>
+
+
+<div class="chart"></div>
+<script src="http://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
+<script>
+
+
+String.prototype.cleanup = function() {
+   return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "");
+}
+
+var qstring = decodeURI(window.location.search);
+
+// var qstring = "Hello World!"
+var letters = qstring.cleanup();
+
+var letter_counts = Object();
+for(i = 0, length = letters.length; i < length; i++) {
+	var l = letters.charAt(i);
+	letter_counts[l] = (isNaN(letter_counts[l]) ? 1 : letter_counts[l] + 1);
+}
+
+
+var unique_letters = Object.keys(letter_counts);
+var counts = Object.keys(letter_counts).map(function(key){return letter_counts[key]});
+var max_value = Math.max.apply(Math, counts);
+
+
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    w = 960 - margin.left - margin.right,
+    h = 550 - margin.top - margin.bottom;
+
+var yScale = d3.scale.linear()
+				.domain([0, max_value])
+				.range([0,h]);
+
+var xScale = d3.scale.ordinal()
+				.domain(unique_letters)
+				.rangeRoundBands([0, w], .1);
+
+var svg = d3.select("body")
+            .append("svg")
+            .attr("width", w + margin.left + margin.right)
+            .attr("height", h  + margin.top + margin.bottom)
+            .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var num_bars = d3.entries(letter_counts).length
+var dataset = d3.entries(letter_counts)
+var barPadding = 5;
+
+var xAxis = d3.svg.axis()
+			  .scale(xScale)
+			  .orient("bottom");
+
+svg.selectAll("rect")
+   .data(dataset)
+   .enter()
+   .append("rect")
+   .attr("x", function(d,i) {
+	return i * (w / num_bars);
+	})
+   .attr("y", function(d) {
+    return h - yScale(d.value);  //Height minus data value
+	})
+	.attr("height", function(d) {
+    return yScale(d.value);  //Just the data value
+	})
+   .attr("width", w/num_bars-barPadding)
+   .attr("fill", "teal");
+
+ svg.selectAll("text")
+   .data(dataset)
+   .enter()
+   .append("text")
+   .text(function(d) {
+        return d.value;
+   })
+   .attr("text-anchor", "middle")
+   .attr("x", function(d, i) {
+        return i * (w /(num_bars)) + (w /num_bars-barPadding) / 2;
+   })
+   .attr("y", function(d) {
+        return h - yScale(d.value) + 24;  // +15
+   })
+   .attr("font-family", "sans-serif")
+   .attr("font-size", "24px")
+   .attr("fill", "white");
+
+
+ svg.append("g")
+ 	.attr("class", "axis")
+ 	.attr("transform", "translate(0," + h + ")")
+ 	.call(xAxis);
+</script>
