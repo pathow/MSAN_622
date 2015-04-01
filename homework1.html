@@ -1,105 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>MSAN 622 Information Visualization</title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
+<style type="text/css">
+    body {
+        padding-top: 50px;
+        padding-bottom: 20px;
+    }
+</style>
 <style>
-.chart div {
-  font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
+
+.axis text {
+  font: 16px sans-serif;
 }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+	display: none;
+}
+
+label {
+  position: absolute;
+  top: 200px;
+  right: 200px;
+}
+
 </style>
 
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
 
-<div class="chart"></div>
+<body>
+
+<!-- Fixed Navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">MSN 622</a>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#homework">Homework</a></li>
+                <li><a href="#project">Project</a></li>
+                <li><a href="#participation">Participation</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Homework 1 App</h1>
+        <h2>Bar Graph of Letter Counts</h2>
+    </div>
+</div>
+
 <script src="http://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
-<script>
 
+    <button id="sort" onclick="sortBars()">Sort</button>
+    <button id="reset" onclick="reset()">Reset</button>
 
-String.prototype.cleanup = function() {
-   return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "");
-}
+<label><input type="checkbox"> Sort values</label>
+<script src="letter_count.js" charset="utf-8"></script>
 
-var qstring = decodeURI(window.location.search);
-
-// var qstring = "Hello World!"
-var letters = qstring.cleanup();
-
-var letter_counts = Object();
-for(i = 0, length = letters.length; i < length; i++) {
-	var l = letters.charAt(i);
-	letter_counts[l] = (isNaN(letter_counts[l]) ? 1 : letter_counts[l] + 1);
-}
-
-
-var unique_letters = Object.keys(letter_counts);
-var counts = Object.keys(letter_counts).map(function(key){return letter_counts[key]});
-var max_value = Math.max.apply(Math, counts);
-
-
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    w = 960 - margin.left - margin.right,
-    h = 550 - margin.top - margin.bottom;
-
-var yScale = d3.scale.linear()
-				.domain([0, max_value])
-				.range([0,h]);
-
-var xScale = d3.scale.ordinal()
-				.domain(unique_letters)
-				.rangeRoundBands([0, w], .1);
-
-var svg = d3.select("body")
-            .append("svg")
-            .attr("width", w + margin.left + margin.right)
-            .attr("height", h  + margin.top + margin.bottom)
-            .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-var num_bars = d3.entries(letter_counts).length
-var dataset = d3.entries(letter_counts)
-var barPadding = 5;
-
-var xAxis = d3.svg.axis()
-			  .scale(xScale)
-			  .orient("bottom");
-
-svg.selectAll("rect")
-   .data(dataset)
-   .enter()
-   .append("rect")
-   .attr("x", function(d,i) {
-	return i * (w / num_bars);
-	})
-   .attr("y", function(d) {
-    return h - yScale(d.value);  //Height minus data value
-	})
-	.attr("height", function(d) {
-    return yScale(d.value);  //Just the data value
-	})
-   .attr("width", w/num_bars-barPadding)
-   .attr("fill", "teal");
-
- svg.selectAll("text")
-   .data(dataset)
-   .enter()
-   .append("text")
-   .text(function(d) {
-        return d.value;
-   })
-   .attr("text-anchor", "middle")
-   .attr("x", function(d, i) {
-        return i * (w /(num_bars)) + (w /num_bars-barPadding) / 2;
-   })
-   .attr("y", function(d) {
-        return h - yScale(d.value) + 24;  // +15
-   })
-   .attr("font-family", "sans-serif")
-   .attr("font-size", "24px")
-   .attr("fill", "white");
-
-
- svg.append("g")
- 	.attr("class", "axis")
- 	.attr("transform", "translate(0," + h + ")")
- 	.call(xAxis);
-</script>
+</body>
