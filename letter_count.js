@@ -92,7 +92,7 @@ svg.selectAll("rect")
    .on("mouseout", function(d) {
            d3.select(this)
               .transition()
-              .duration(250)
+              .duration(400)
             .attr("fill", "blue")
    .attr("opacity", function(d) {return 0.2 + 0.8*(d[1]/max_value);});
          })
