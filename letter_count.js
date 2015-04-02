@@ -1,3 +1,4 @@
+
 String.prototype.cleanup = function(){
    return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "");
 }
@@ -13,10 +14,25 @@ for(i = 0, length = letters.length; i < length; i++) {
 	letter_counts[l] = (isNaN(letter_counts[l]) ? 1 : letter_counts[l] + 1);
 };
 
+// This block is what sorts the data by count values descending
+var sortable = [];
+for (var letter in letter_counts)
+      sortable.push([letter, letter_counts[letter]])
+sortable.sort(function(a, b) {return a[1] - b[1]});
 
 var unique_letters = Object.keys(letter_counts);
 var counts = Object.keys(letter_counts).map(function(key){return letter_counts[key]});
 var max_value = Math.max.apply(Math, counts);
+var min_value = Math.min.apply(Math, counts);
+
+
+var color = d3.scale.ordinal()
+    .domain(sortable)
+    .range(d3.range(sortable.length).map(d3.scale.linear()
+      .domain([0, sortable.length-1])
+      .range(["blue", "yellow"])
+      .interpolate(d3.interpolateLab)));
+
 
 
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
@@ -44,40 +60,43 @@ var yAxis = d3.svg.axis()
     .ticks(Math.min(max_value, 10));
 
 var xScale = d3.scale.ordinal()
-				.domain(unique_letters)
-				.rangeBands([0, w-barPadding]);
+				.domain(sortable.reverse().map(function(d){
+          return d[0];
+        }))
+				.rangeBands([0, w],0.05);
 
 var xAxis = d3.svg.axis()
 			  .scale(xScale)
 			  .orient("bottom");
 
 svg.selectAll("rect")
-   .data(dataset)
+   .data(sortable)
    .enter()
    .append("rect")
    .attr("x", function(d,i) {
 	return 20 + i * (w / num_bars);
 	})
    .attr("y", function(d) {
-    return yScale(d.value);  //Height minus data value
+    return yScale(d[1]);  //Height minus data value
 	})
 	.attr("height", function(d) {
-    return h-yScale(d.value);  //Just the data value
+    return h-yScale(d[1]);  //Just the data value
 	})
-   .attr("width", w/num_bars-barPadding)
-   .attr("fill", "teal");
+   .attr("width", xScale.rangeBand())
+   .attr("fill", function(d) { return color(++i); })
+   .attr("opacity", 0.65);
 
  // svg.selectAll("text")
- //   .data(dataset)
+ //   .data(dataset.sort(function(a, b){return b.value-a.value}))
  //   .enter()
  //   .append("text")
  //   .text(function(d) {
- //        return d.value;
+ //        return d.key;
  //   })
- //   .attr("text-anchor", "middle")
- //   .attr("x", function(d, i) {
- //        return i * (w /(num_bars)) + (w /num_bars-barPadding) / 2;
- //   })
+ //   .attr("text-anchor", "middle");
+   // .attr("x", function(d, i) {
+   //      return i * (w /(num_bars)) + (w /num_bars-barPadding) / 2;
+   // })
  //   .attr("y", function(d) {
  //        return h - yScale(d.value) + 24;  // +15
  //   })
@@ -103,35 +122,5 @@ svg.append("g")
       .style("text-anchor", "end")
       .text("Count");
 
-  d3.select("input").on("change", change);
-
-  var sortTimeout = setTimeout(function() {
-    d3.select("input").property("checked", true).each(change);
-  }, 2000);
-
-  function change() {
-    clearTimeout(sortTimeout);
-
-    // Copy-on-write since tweens are evaluated after a delay.
-    var x0 = xScale.domain(dataset.sort(this.checked
-        ? function(a, b) { return b.value - a.value; }
-        : function(a, b) { return d3.ascending(a.key, b.key); })
-        .map(function(d) { return d.key; }))
-        .copy();
-
-    svg.selectAll(".rect")
-        .sort(function(a, b) { return x0(a.value) - x0(b.value); });
-
-    var transition = svg.transition().duration(750),
-        delay = function(d, i) { return i * 50; };
-
-    transition.selectAll(".rect")
-        .delay(delay)
-        .attr("x", function(d) { return x0(d.key); });
-
-    transition.select(".x.axis")
-        .call(xAxis)
-      .selectAll("g")
-        .delay(delay);
-  };
+ 
 
