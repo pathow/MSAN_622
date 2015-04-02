@@ -1,6 +1,6 @@
 
 String.prototype.cleanup = function(){
-   return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "");
+   return this.toLowerCase().replace(/[^a-zA-Z]+/g, "");
 }
 
 var qstring = decodeURI(window.location.search);
@@ -83,8 +83,26 @@ svg.selectAll("rect")
     return h-yScale(d[1]);  //Just the data value
 	})
    .attr("width", xScale.rangeBand())
-   .attr("fill", function(d) { return color(++i); })
-   .attr("opacity", 0.65);
+   .attr("fill", "blue")
+   .attr("opacity", function(d) {return 0.2 + 0.8*(d[1]/max_value);})
+   .on("mouseover", function() {
+            d3.select(this)
+              .attr("fill", "orange")
+            })      
+   .on("mouseout", function(d) {
+           d3.select(this)
+              .transition()
+              .duration(250)
+            .attr("fill", "blue")
+   .attr("opacity", function(d) {return 0.2 + 0.8*(d[1]/max_value);});
+         })
+   .append("title")
+   .text(function(d) {
+    if (d[1] == 1){
+         return "Letter " + d[0] + " appeared 1 time.";
+       }
+    else {return "Letter " + d[0] + " appeared " + d[1] + " times.";}
+   });
 
  // svg.selectAll("text")
  //   .data(dataset.sort(function(a, b){return b.value-a.value}))
