@@ -83,13 +83,33 @@ label {
 
 <div class="jumbotron">
     <div class="container">
-        <h1>Homework 1 App</h1>
-        <h2>Bar Graph of Letter Counts</h2>
+        <h1>Graph of Letter Counts</h1>
+        <h2>Homework 1 App</h2>
+        <h4>Add a query string to the url above (of the form: .html?[[words go here]]), and return a graph of letter counts!</h4>
     </div>
 </div>
 
 <script src="http://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
 <script src="js/underscore.js"></script>
-<script src="letter_count.js" charset="utf-8"></script>
+
+
+<p style="text-align: center;">
+    <script src="letter_count.js" charset="utf-8"></script>
+</p>
+
+<div class="container">
+
+<div class="row">
+    <div class="col-md-6">
+        <h2 class="page-header">Features Added</h2>
+        <ul>
+            <li>Altered the axis line to make it less thick</li>
+            <li>Made tick marks conditional -- a tick for each unit up to the maximum value, unless the maximum value is > 10, then only 10 ticks appear</li>
+        </ul>
+    </div>
+</div>
+<p></p>
+</div>
+
 
 </body>

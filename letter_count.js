@@ -39,7 +39,7 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
     w = 960 - margin.left - margin.right,
     h = 550 - margin.top - margin.bottom;
 
-var svg = d3.select("body")
+var svg = d3.select("p")
             .append("svg")
             .attr("width", w + margin.left + margin.right)
             .attr("height", h  + margin.top + margin.bottom)
