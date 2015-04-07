@@ -76,12 +76,8 @@ svg.selectAll("rect")
    .attr("x", function(d,i) {
 	return 20 + i * (w / num_bars);
 	})
-   .attr("y", function(d) {
-    return yScale(d[1]);  //Height minus data value
-	})
-	.attr("height", function(d) {
-    return h-yScale(d[1]);  //Just the data value
-	})
+   .attr("y", h)
+	 .attr("height", 0)
    .attr("width", xScale.rangeBand())
    .attr("fill", "blue")
    .attr("opacity", function(d) {return 0.2 + 0.8*(d[1]/max_value);})
@@ -94,7 +90,7 @@ svg.selectAll("rect")
               .transition()
               .duration(400)
             .attr("fill", "blue")
-   .attr("opacity", function(d) {return 0.2 + 0.8*(d[1]/max_value);});
+            .attr("opacity", function(d) {return 0.2 + 0.8*(d[1]/max_value);});
          })
    .append("title")
    .text(function(d) {
@@ -104,23 +100,11 @@ svg.selectAll("rect")
     else {return "Letter " + d[0] + " appeared " + d[1] + " times.";}
    });
 
- // svg.selectAll("text")
- //   .data(dataset.sort(function(a, b){return b.value-a.value}))
- //   .enter()
- //   .append("text")
- //   .text(function(d) {
- //        return d.key;
- //   })
- //   .attr("text-anchor", "middle");
-   // .attr("x", function(d, i) {
-   //      return i * (w /(num_bars)) + (w /num_bars-barPadding) / 2;
-   // })
- //   .attr("y", function(d) {
- //        return h - yScale(d.value) + 24;  // +15
- //   })
- //   .attr("font-family", "sans-serif")
- //   .attr("font-size", "24px")
- //   .attr("fill", "white");
+svg.selectAll("rect").transition()
+      .delay(function(d, i) { return i * 100; })
+      .duration(1000)
+      .attr('y', function(d) { return yScale(d[1]); })
+      .attr('height', function(d) { return h - yScale(d[1]); });
 
 
  svg.append("g")
@@ -139,6 +123,11 @@ svg.append("g")
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Count");
+
+
+
+
+
 
  
 
