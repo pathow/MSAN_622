@@ -91,6 +91,15 @@ label {
 
 <script src="http://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
 <script src="js/underscore.js"></script>
+<script>
+function reload_page(){
+      var userInput = document.getElementById('user-field-input');
+      var fullString = userInput.value;
+      // localStorage.setItem("userSearchInput", fullString);
+
+      location.href = "http://pathow.github.io/MSAN_622/homework1.html?" + fullString;
+  }
+</script>
 
 
 <div class="container">
