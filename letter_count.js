@@ -1,3 +1,11 @@
+function reload_page(){
+      var userInput = document.getElementById('user-field-input');
+      var fullString = userInput.value;
+      // localStorage.setItem("userSearchInput", fullString);
+
+      location.href = "http://pathow.github.io/MSAN_622/homework1.html?" + fullString;
+  }
+
 
 String.prototype.cleanup = function(){
    return this.toLowerCase().replace(/[^a-zA-Z]+/g, "");

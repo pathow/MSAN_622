@@ -93,19 +93,39 @@ label {
 <script src="js/underscore.js"></script>
 
 
+<div class="container">
+<div class="row">
+    <div class="col-lg-6">
+        <div class="input-group">
+            <span class="input-group-btn">
+
+            <input type="text" id="user-field-input" class="form-control" placeholder="Enter a string...">
+             <button class="btn btn-default" type="button" onclick="reload_page()">
+                  <span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
+                </button>
+        </div>
+    </div>
+</div>
+
+
 <p style="text-align: center;">
     <script src="letter_count.js" charset="utf-8"></script>
 </p>
 
-<div class="container">
+
 
 <div class="row">
     <div class="col-md-6">
         <h2 class="page-header">Features Added</h2>
+        <h3>C-level Functionality</h3>
         <ul>
+            <li>Gets the query string from the URL</li>
+            <li>Stores the data as an array of objects, sorted and ordered by the values of letter count</li>
             <li>Altered the axis line to make it less thick</li>
             <li>Made tick marks conditional -- a tick for each unit up to the maximum value, unless the maximum value is > 10, then only 10 ticks appear</li>
+            <li>Set the colors of the bars, in this case to a gradient where the higher the relative value, the darker the color</li>
         </ul>
+        <h3>B-level Functionality</h3>
     </div>
 </div>
 <p></p>
