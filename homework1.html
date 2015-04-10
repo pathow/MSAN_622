@@ -108,8 +108,8 @@ function reload_page(){
         <div class="input-group">
             <span class="input-group-btn">
 
-            <input type="text" id="user-field-input" class="form-control" placeholder="Enter a string...">
-             <button class="btn btn-default" type="button" onclick="reload_page()">
+            <input type="text" id="user-field-input" class="form-control" placeholder="Enter a string..." onkeydown="if (event.keyCode == 13) document.getElementById('btnInput').click()">
+             <button class="btn btn-default" type="button" id="btnInput" onclick="reload_page()">
                   <span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
                 </button>
         </div>
