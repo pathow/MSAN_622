@@ -12,13 +12,14 @@ d3.csv("state.x77.csv", function(data) {
     scattermatrix(states);
 });
 
+
 function bubbleChart(data) {
 
 	var tip = d3.tip()
 	  .attr('class', 'd3-tip')
 	  .offset([-10, 0])
 	  .html(function(d) {
-	    return "<strong>State:</strong><span style='color:#66FFFF'> " + d.abbrv + "</span><br>"+
+	    return "<strong>State:</strong><span style='color:#66FFFF'> " + d.name + "</span><br>"+
 	    "<strong>Life Expectancy:</strong> <span style='color:#66FFFF'>" + d.life + "</span><br>"+
 	    "<strong>Murder Rate:</strong> <span style='color:#66FFFF'>" + d.murder + "</span><br>"+
 	    "<strong>Days Below Freezing:</strong> <span style='color:#66FFFF'>" + d.freezing + "</span>";
@@ -47,7 +48,7 @@ function bubbleChart(data) {
 			  .orient("bottom");
 
 	function radius(d) {
-		return d.freezing;
+		return Math.sqrt(+d.freezing);
 	};
 	function order(a, b) {
   		return radius(b) - radius(a);
@@ -66,7 +67,7 @@ function bubbleChart(data) {
 	        return yScale(+d['life']);
 	   })
 	   .attr("r", function(d) {
-	   	 return (+d['freezing']+5)/5 ;
+	   	 return (radius(d)+0.5);
 	   })
 	   .style("opacity", 0.75)
 	   .style("fill", function(d) {
@@ -106,7 +107,7 @@ function scattermatrix(data) {
   var size = 175,
       padding = 16,
       n = 4,
-      traits = ["hsgrad", "illiteracy", "life", "murder"];
+      traits = ["life", "hsgrad", "illiteracy", "murder"];
 
   // Position scales.
   var x = {}, y = {};
@@ -138,8 +139,8 @@ function scattermatrix(data) {
 
   // Root panel.
   var svg = d3.select("p").append("svg:svg")
-      .attr("width", 1600)
-      .attr("height", 1200)
+      .attr("width", 1280)
+      .attr("height", 800)
     .append("svg:g")
       .attr("transform", "translate(359.5,69.5)");
   // 
@@ -248,4 +249,147 @@ function scattermatrix(data) {
     return c;
   }
 };
+
+// function parallel(data){
+
+// 	var tip = d3.tip()
+// 	  .attr('class', 'd3-tip')
+// 	  .offset([-10, 0])
+// 	  .html(function(d) {
+// 	    return "<strong>State:</strong><span style='color:#66FFFF'> " + d.state + "</span>";
+// 	  })
+
+// 	var region = ["South", "West", "Northeast", "North Central"],
+//     traits = ["life", "hsgrad", "illiteracy", "murder"];
+
+// 	var m = [80, 100, 100, 100],
+// 	    w = 1280 - m[1] - m[3],
+// 	    h = 800 - m[0] - m[2];
+
+// 	var x = d3.scale.ordinal().domain(traits).rangePoints([0, w]),
+// 	    y = {};
+
+// 	var line = d3.svg.line(),
+// 	    axis = d3.svg.axis().orient("left"),
+// 	    foreground;
+
+// 	var svg = d3.select("p").append("svg:svg")
+// 	    .attr("width", w + m[1] + m[3])
+// 	    .attr("height", h + m[0] + m[2])
+// 	  .append("svg:g")
+// 	    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+
+// 	  // Create a scale and brush for each trait.
+// 	  traits.forEach(function(d) {
+// 	    // Coerce values to numbers.
+// 	    data.forEach(function(p) { p[d] = +p[d]; });
+
+// 	    y[d] = d3.scale.linear()
+// 	        .domain(d3.extent(data, function(p) { return p[d]; }))
+// 	        .range([h, 0]);
+
+// 	    y[d].brush = d3.svg.brush()
+// 	        .y(y[d])
+// 	        .on("brush", brush);
+// 	 });
+
+// 	  // // Add a legend.
+// 	  // var legend = svg.selectAll("g.legend")
+// 	  //     .data(region)
+// 	  //   .enter().append("svg:g")
+// 	  //     .attr("class", "legend")
+// 	  //     .attr("transform", function(d, i) { return "translate(0," + (i * 20 + 584) + ")"; });
+
+// 	  // legend.append("svg:line")
+// 	  //     .attr("class", String)
+// 	  //     .attr("x2", 8);
+
+// 	  // legend.append("svg:text")
+// 	  //     .attr("x", 12)
+// 	  //     .attr("dy", ".31em")
+// 	  //     .text(function(d) { return d; });
+
+// 	  svg.append('g')
+// 	  	 .attr('class', 'background')
+// 	  	.selectAll("path")
+// 	  	 .data(data)
+// 	  	 .enter().append('path')
+// 	  	 	.attr("d", path)
+
+// 	  svg.call(tip);
+
+// 	  // Add foreground lines.
+// 	  foreground = svg.append("svg:g")
+// 	      .attr("class", "foreground")
+// 	    .selectAll("path")
+// 	      .data(data)
+// 	    .enter().append("svg:path")
+// 	      .attr("d", path)
+// 	      .attr("class", function(d) { return d.region; })
+// 	      .attr("stroke", function(d) {return color(d.region)});
+
+// 	  // Add a group element for each trait.
+// 	  var g = svg.selectAll(".trait")
+// 	      .data(traits)
+// 	    .enter().append("svg:g")
+// 	      .attr("class", "trait")
+// 	      .attr("transform", function(d) { return "translate(" + x(d) + ")"; })
+// 	      .call(d3.behavior.drag()
+// 	      .origin(function(d) { return {x: x(d)}; })
+// 	      .on("dragstart", dragstart)
+// 	      .on("drag", drag)
+// 	      .on("dragend", dragend));
+
+// 	  // Add an axis and title.
+// 	  g.append("svg:g")
+// 	      .attr("class", "axis")
+// 	      .each(function(d) { d3.select(this).call(axis.scale(y[d])); })
+// 	    .append("svg:text")
+// 	      .attr("text-anchor", "middle")
+// 	      .attr("y", -9)
+// 	      .text(String);
+
+// 	  // Add a brush for each axis.
+// 	  g.append("svg:g")
+// 	      .attr("class", "brush")
+// 	      .each(function(d) { d3.select(this).call(y[d].brush); })
+// 	    .selectAll("rect")
+// 	      .attr("x", -8)
+// 	      .attr("width", 16);
+
+// 	  function dragstart(d) {
+// 	    i = traits.indexOf(d);
+// 	  }
+
+// 	  function drag(d) {
+// 	    x.range()[i] = d3.event.x;
+// 	    traits.sort(function(a, b) { return x(a) - x(b); });
+// 	    g.attr("transform", function(d) { return "translate(" + x(d) + ")"; });
+// 	    foreground.attr("d", path);
+// 	  }
+
+// 	  function dragend(d) {
+// 	    x.domain(traits).rangePoints([0, w]);
+// 	    var t = d3.transition().duration(500);
+// 	    t.selectAll(".trait").attr("transform", function(d) { return "translate(" + x(d) + ")"; });
+// 	    t.selectAll(".foreground path").attr("d", path);
+// 	  };
+
+// 	// Returns the path for a given data point.
+// 	function path(d) {
+// 	  return line(traits.map(function(p) { return [x(p), y[p](d[p])]; }));
+// 	}
+
+// 	// Handles a brush event, toggling the display of foreground lines.
+// 	function brush() {
+// 	  var actives = traits.filter(function(p) { return !y[p].brush.empty(); }),
+// 	      extents = actives.map(function(p) { return y[p].brush.extent(); });
+// 	  foreground.classed("fade", function(d) {
+// 	    return !actives.every(function(p, i) {
+// 	      return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+// 	    });
+// 	  });
+// 	}
+// };
 
