@@ -17,6 +17,7 @@ function alphabetize(a,b) {
 
 d3.csv("state.x77_v2.csv", function(data) {
 	states2 = data.sort(function (a,b) {return d3.ascending(a['State Name'], b['State Name']); });
+	console.log(states2)
     parallel(states2);
 });
 
@@ -29,6 +30,7 @@ function parallel(data){
 
 // collect text for first column to adjust left margin
 var firstCell = data.map(function(d){return d3.values(d)[0]});
+console.log(firstCell)
 
 // find the longest text size in the first row to adjust left margin
 var textLength = 25;
