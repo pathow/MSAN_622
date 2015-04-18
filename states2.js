@@ -43,7 +43,7 @@ firstCell.forEach(function(d){
 // get parallel coordinates
 graph = d3.parcoords()('#wrapper')
 	.data(data)
-		.margin({ top: 30, left: 3 * textLength, bottom: 40, right: 0 })
+		.margin({ top: 30, left: 3 * textLength, bottom: 60, right: 0 })
 		.alpha(0.6)
 		.mode("queue")
 		.rate(5)
@@ -59,7 +59,7 @@ d3.select("#wrapper svg").append("text")
 	.text(instructions)
 	.attr("text-anchor", "middle")
 	.attr("text-decoration", "overline")
-	.attr("transform", "translate(" + graph.width()/2 + "," + (graph.height()-5) + ")");;
+	.attr("transform", "translate(" + graph.width()/2 + "," + (graph.height()-25) + ")");;
 
 // set the initial coloring based on the 3rd column
 update_colors(d3.keys(data[0])[2]);

@@ -38,7 +38,7 @@
 }
 
 .axis text {
-  font: 16px sans-serif;
+  font: 10px sans-serif;
 }
 
 .axis path,
@@ -75,10 +75,18 @@ rect.frame {
 }
 
 circle {
-  fill: #ccc;
-  fill-opacity: .75;
+  fill-opacity: .7;
 }
 
+circle.hidden {
+  fill: #ccc !important;
+}
+
+.extent {
+  fill: #000;
+  fill-opacity: .125;
+  stroke: #fff;
+}
 .legend.circle {
   fill-opacity: 1;
 }
@@ -151,11 +159,14 @@ circle {
 		color:black;
 	}
 
-
 label {
   position: absolute;
   top: 200px;
   right: 200px;
+}
+
+.dimension {
+	font-size: 8px;
 }
 
 </style>
@@ -217,7 +228,27 @@ label {
 <p style="text-align: center;">
     <script src="states.js" charset="utf-8"></script>
 </p>
+<h1>Days Below Freezing vs. Murder and Life Expectancy by State</h1>
+    <chart1></chart1>
+<p>
+	Functionality: As a bubble-chart, this plot meets all basic requirements for the C-level functionality. Beyond the simple X-Y plotting of murder rates and life expectancy, the variables of days below freezing in that state's capitol and the state's regions were added as the size and color of the bubbles on the plot. In addition, I added in a dynamic tooltip when one hovers over a bubble that shows all of these specfic values for that given state. My main concern with the plot in its current form is that days below freezing proved to not have as much variation/differentiation in size of bubbles as I had hoped, but overall I am pleased with the aesthetics/functionality of the plot.
+</p>
+<h1>Scatterplot Matrix of Selected Quantitative Measures</h1>
+    <chart2></chart2>
+<p>
+	Functionality: As a scatterplot matrix, this plot meets the stated requirements for the B-level functionality. Personally, the aesthetics of the example versions of the scatterplot matrix I found lacking, especially in regards to the axis lines. The main difference in my plots is that I removed the grid stretching across both X and Y dimensions of the plot, opting instead for a more minimalist look...especially since the main purpose of scatterplot matrices are to convey information about correlations, not specfic values. I also encoded the color of points to be different hues for different overarching regions (of which there are four).
+</p>
+<h1>Parallel Coordinates of All Quantitative Measures by State</h1>
 <p id="wrapper" class="parcoords" style="width:100%; height:600px">
 	<script src="states2.js" charset="utf-8"></script>
 	</p>
+<p><br></p>
+<p>
+	Functionality: The above parallel coordinates plot meets all of the requirements to achieve the A-level threshold. Additionally, I focused much of my efforts into making this plot as interactive as possible. As mentioned in the note on the plot itself, but to explain in a little more detail here, the dimensions of interactivity include:<br>
+		<ul>
+			<li>Brushing along any axis will limit the number of lines shown to only that selection.</li>
+			<li>Hovering over a particular line will: 1. highlight the entirety of that line, and 2. make local tooltips appear on all values for that line.</li>
+			<li>Clicking on an axis title will change the color coding so that the max value of that axis is red and the min value is blue, with a gradient between the two extremes</li>
+		</ul>
+</p>
 </div>

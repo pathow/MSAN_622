@@ -1,7 +1,7 @@
 var states = [];
 
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    w = 960 - margin.left - margin.right,
+    w = 1260 - margin.left - margin.right,
     h = 550 - margin.top - margin.bottom;
 
 var color = d3.scale.category10()
@@ -26,7 +26,7 @@ function bubbleChart(data) {
 	  })
 
 
-	var svg = d3.select("p")
+	var svg = d3.select("chart1")
 	            .append("svg")
                 .attr("width", w + margin.left + margin.right)
                 .attr("height", h  + margin.top + margin.bottom);
@@ -60,6 +60,7 @@ function bubbleChart(data) {
 	   .data(data)
 	   .enter()
 	   .append("circle") 
+	   .attr("class", "dot")
 	   .attr("cx", function(d) {
 	        return xScale(+d['murder']);
 	   })
@@ -104,6 +105,7 @@ function bubbleChart(data) {
 
 function scattermatrix(data) {
 	// Size parameters.
+
   var size = 175,
       padding = 16,
       n = 4,
@@ -138,11 +140,11 @@ function scattermatrix(data) {
       .on("brushend", brushend);
 
   // Root panel.
-  var svg = d3.select("p").append("svg:svg")
+  var svg = d3.select("chart2").append("svg:svg")
       .attr("width", 1280)
       .attr("height", 800)
     .append("svg:g")
-      .attr("transform", "translate(359.5,69.5)");
+      .attr("transform", "translate(200,69.5)");
   // 
 
   // Legend.
@@ -194,6 +196,7 @@ function scattermatrix(data) {
       .text(function(d) { return d.x; });
 
   function plot(p) {
+
     var cell = d3.select(this);
 
     // Plot frame.
@@ -218,29 +221,30 @@ function scattermatrix(data) {
     cell.call(brush.x(x[p.x]).y(y[p.y]));
   }
 
+  var brushCell;
+
   // Clear the previously-active brush, if any.
   function brushstart(p) {
-    if (brush.data !== p) {
-      cell.call(brush.clear());
-      brush.x(x[p.x]).y(y[p.y]).data = p;
+    if (brushCell !== this) {
+      d3.select(brushCell).call(brush.clear());
+      x.domain(domainByTrait[p.x]);
+      y.domain(domainByTrait[p.y]);
+      brushCell = this;
     }
   }
 
   // Highlight the selected circles.
-  function brush(p) {
+  function brushmove(p) {
     var e = brush.extent();
-    svg.selectAll(".cell circle").attr("class", function(d) {
-      return e[0][0] <= d[p.x] && d[p.x] <= e[1][0]
-          && e[0][1] <= d[p.y] && d[p.y] <= e[1][1]
-          ? d.region : null;
+    svg.selectAll("circle").classed("hidden", function(d) {
+      return e[0][0] > d[p.x] || d[p.x] > e[1][0]
+          || e[0][1] > d[p.y] || d[p.y] > e[1][1];
     });
   }
 
   // If the brush is empty, select all circles.
   function brushend() {
-    if (brush.empty()) svg.selectAll(".cell circle").attr("class", function(d) {
-      return d.region;
-    });
+    if (brush.empty()) svg.selectAll(".hidden").classed("hidden", false);
   }
 
   function cross(a, b) {
@@ -248,148 +252,7 @@ function scattermatrix(data) {
     for (i = -1; ++i < n;) for (j = -1; ++j < m;) c.push({x: a[i], i: i, y: b[j], j: j});
     return c;
   }
+
 };
 
-// function parallel(data){
-
-// 	var tip = d3.tip()
-// 	  .attr('class', 'd3-tip')
-// 	  .offset([-10, 0])
-// 	  .html(function(d) {
-// 	    return "<strong>State:</strong><span style='color:#66FFFF'> " + d.state + "</span>";
-// 	  })
-
-// 	var region = ["South", "West", "Northeast", "North Central"],
-//     traits = ["life", "hsgrad", "illiteracy", "murder"];
-
-// 	var m = [80, 100, 100, 100],
-// 	    w = 1280 - m[1] - m[3],
-// 	    h = 800 - m[0] - m[2];
-
-// 	var x = d3.scale.ordinal().domain(traits).rangePoints([0, w]),
-// 	    y = {};
-
-// 	var line = d3.svg.line(),
-// 	    axis = d3.svg.axis().orient("left"),
-// 	    foreground;
-
-// 	var svg = d3.select("p").append("svg:svg")
-// 	    .attr("width", w + m[1] + m[3])
-// 	    .attr("height", h + m[0] + m[2])
-// 	  .append("svg:g")
-// 	    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
-
-
-// 	  // Create a scale and brush for each trait.
-// 	  traits.forEach(function(d) {
-// 	    // Coerce values to numbers.
-// 	    data.forEach(function(p) { p[d] = +p[d]; });
-
-// 	    y[d] = d3.scale.linear()
-// 	        .domain(d3.extent(data, function(p) { return p[d]; }))
-// 	        .range([h, 0]);
-
-// 	    y[d].brush = d3.svg.brush()
-// 	        .y(y[d])
-// 	        .on("brush", brush);
-// 	 });
-
-// 	  // // Add a legend.
-// 	  // var legend = svg.selectAll("g.legend")
-// 	  //     .data(region)
-// 	  //   .enter().append("svg:g")
-// 	  //     .attr("class", "legend")
-// 	  //     .attr("transform", function(d, i) { return "translate(0," + (i * 20 + 584) + ")"; });
-
-// 	  // legend.append("svg:line")
-// 	  //     .attr("class", String)
-// 	  //     .attr("x2", 8);
-
-// 	  // legend.append("svg:text")
-// 	  //     .attr("x", 12)
-// 	  //     .attr("dy", ".31em")
-// 	  //     .text(function(d) { return d; });
-
-// 	  svg.append('g')
-// 	  	 .attr('class', 'background')
-// 	  	.selectAll("path")
-// 	  	 .data(data)
-// 	  	 .enter().append('path')
-// 	  	 	.attr("d", path)
-
-// 	  svg.call(tip);
-
-// 	  // Add foreground lines.
-// 	  foreground = svg.append("svg:g")
-// 	      .attr("class", "foreground")
-// 	    .selectAll("path")
-// 	      .data(data)
-// 	    .enter().append("svg:path")
-// 	      .attr("d", path)
-// 	      .attr("class", function(d) { return d.region; })
-// 	      .attr("stroke", function(d) {return color(d.region)});
-
-// 	  // Add a group element for each trait.
-// 	  var g = svg.selectAll(".trait")
-// 	      .data(traits)
-// 	    .enter().append("svg:g")
-// 	      .attr("class", "trait")
-// 	      .attr("transform", function(d) { return "translate(" + x(d) + ")"; })
-// 	      .call(d3.behavior.drag()
-// 	      .origin(function(d) { return {x: x(d)}; })
-// 	      .on("dragstart", dragstart)
-// 	      .on("drag", drag)
-// 	      .on("dragend", dragend));
-
-// 	  // Add an axis and title.
-// 	  g.append("svg:g")
-// 	      .attr("class", "axis")
-// 	      .each(function(d) { d3.select(this).call(axis.scale(y[d])); })
-// 	    .append("svg:text")
-// 	      .attr("text-anchor", "middle")
-// 	      .attr("y", -9)
-// 	      .text(String);
-
-// 	  // Add a brush for each axis.
-// 	  g.append("svg:g")
-// 	      .attr("class", "brush")
-// 	      .each(function(d) { d3.select(this).call(y[d].brush); })
-// 	    .selectAll("rect")
-// 	      .attr("x", -8)
-// 	      .attr("width", 16);
-
-// 	  function dragstart(d) {
-// 	    i = traits.indexOf(d);
-// 	  }
-
-// 	  function drag(d) {
-// 	    x.range()[i] = d3.event.x;
-// 	    traits.sort(function(a, b) { return x(a) - x(b); });
-// 	    g.attr("transform", function(d) { return "translate(" + x(d) + ")"; });
-// 	    foreground.attr("d", path);
-// 	  }
-
-// 	  function dragend(d) {
-// 	    x.domain(traits).rangePoints([0, w]);
-// 	    var t = d3.transition().duration(500);
-// 	    t.selectAll(".trait").attr("transform", function(d) { return "translate(" + x(d) + ")"; });
-// 	    t.selectAll(".foreground path").attr("d", path);
-// 	  };
-
-// 	// Returns the path for a given data point.
-// 	function path(d) {
-// 	  return line(traits.map(function(p) { return [x(p), y[p](d[p])]; }));
-// 	}
-
-// 	// Handles a brush event, toggling the display of foreground lines.
-// 	function brush() {
-// 	  var actives = traits.filter(function(p) { return !y[p].brush.empty(); }),
-// 	      extents = actives.map(function(p) { return y[p].brush.extent(); });
-// 	  foreground.classed("fade", function(d) {
-// 	    return !actives.every(function(p, i) {
-// 	      return extents[i][0] <= d[p] && d[p] <= extents[i][1];
-// 	    });
-// 	  });
-// 	}
-// };
 
