@@ -125,12 +125,33 @@
 
 
 <div class="container">
+<h1>UK Petrol Prices, 1969-1984</h1>
 <p style="text-align: center;">
     <script src="ukpetrol.js" charset="utf-8"></script>
 </p>
-<p class="chart1"></p>
+<p>
+  <h2>List of Graph Functionality</h2>
+  <ul>
+      <li>This is a time series line graph, with filled-in area (C Level)</li>
+      <li>Brushing on context window will change view in focus window (B Level)</li>
+      <li>Any brushed window can be moved and panned, with the focus window following suit (A Level)</li>
+  </ul>
+
+</p>
 <p style="text-align: center;">
   <script src="ukdrivers.js" charset="utf-8"></script>
 </p>
-<p class="chart2"></p>
+<h1>Cumulative and Grouped Casualties in UK Car Accidents, 1969-1984</h1>
+<p class="chart2" style="text-align: center;"></p>
+<p>
+  <h2>List of Graph Functionality</h2>
+  <ul>
+      <li>This is a time series stacked area graph (C Level)</li>
+      <li>Hovering over a particular point on any of the lines will popup a details on demand tooltip, showing the exact time of the point, which group it is applying to, and the group-specific casualty total (B Level)</li>
+  </ul>
+</p>
+<h1>General Discussion of Functionality</h1>
+<p>My main approach to this assignment was to follow the suggestion of implementing different interactivities in the two different plots. This led me to add brushing+panning as the added functionality to my line-graph, and tooltips to show the information in my stacked areas graph. Doing it as separate functionalities on different plots means that there is no concern with collisions or overlapping visualizations. Other than that, the only other consideration I made was a little bit of focus on the aesthetics of the plots, largely concerned with making the colors as non-abrasive to the eye and keeping the axes as minimalist as possible.</p>
+
+<a href="https://github.com/pathow/MSAN_622">Raw Code (Github)</a>
 </div>

@@ -15,22 +15,6 @@ var xAxis = d3.svg.axis().scale(x).orient("bottom"),
     xAxis2 = d3.svg.axis().scale(x2).orient("bottom"),
     yAxis = d3.svg.axis().scale(main_y).orient("left");
 
-var brush = d3.svg.brush()
-    .x(x2)
-    .on("brush", brushed);
-
-var area = d3.svg.area()
-    .interpolate("monotone")
-    .x(function(d) { return x(d.date); })
-    .y0(height)
-    .y1(function(d) { return main_y(d.price); });
-
-var area2 = d3.svg.area()
-    .interpolate("monotone")
-    .x(function(d) { return x2(d.date); })
-    .y0(height2)
-    .y1(function(d) { return y2(d.price); });
-
 var svg = d3.select("p").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom);
@@ -49,8 +33,27 @@ var context = svg.append("g")
     .attr("class", "context")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
+var brush = d3.svg.brush()
+    .x(x2)
+    .on("brush", brushed);
+
+var area = d3.svg.area()
+    .interpolate("monotone")
+    .x(function(d) { return x(d.date); })
+    .y0(height)
+    .y1(function(d) { return main_y(d.price); });
+
+var area2 = d3.svg.area()
+    .interpolate("monotone")
+    .x(function(d) { return x2(d.date); })
+    .y0(height2)
+    .y1(function(d) { return y2(d.price); });
+
+
+
 d3.csv("ukgas.csv", type, function(error, data) {
-  console.log(data)
+
+  //console.log(data)
   x.domain(d3.extent(data.map(function(d) { return d.date; })));
   main_y.domain([0, d3.max(data.map(function(d) { return d.price; }))]).nice();
   x2.domain(x.domain());

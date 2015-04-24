@@ -35,7 +35,7 @@
 
       d3.csv("ukdeaths.csv", function (error, data) {
 
-        var svg2 = d3.select("p").append("svg")
+        var svg2 = d3.select(".chart2").append("svg")
           .attr("width",  width3  + margin3.left + margin3.right)
           .attr("height", height3 + margin3.top  + margin3.bottom)
         .append("g")
