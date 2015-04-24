@@ -8,11 +8,12 @@
       var y = d3.scale.linear()
           .rangeRound([height3, 0]);
 
-      var xAxis = d3.svg.axis()
+      var xAxis3 = d3.svg.axis()
           .scale(x3)
+          .tickValues(x3.domain())
           .orient("bottom");
 
-      var yAxis = d3.svg.axis()
+      var yAxis2 = d3.svg.axis()
           .scale(y)
           .orient("left");
 
@@ -52,7 +53,7 @@
             seriesArr.push(series[name]);
           });
 
-          //console.log(seriesArr);  
+          console.log(seriesArr);  
 
           data.forEach(function (d) {
             varNames.map(function (name) {
@@ -69,15 +70,13 @@
             })]);
 
           svg2.append("g")
-              .attr("class", "x axis")
+              .attr("class", "x axis2")
               .attr("transform", "translate(0," + height3 + ")")
-              .call(xAxis)
-                .selectAll("text")  
-                    .remove();
+              .call(xAxis3);
 
           svg2.append("g")
-              .attr("class", "y axis")
-              .call(yAxis)
+              .attr("class", "y axis2")
+              .call(yAxis2)
             .append("text")
               .attr("transform", "rotate(-90)")
               .attr("y", 6)

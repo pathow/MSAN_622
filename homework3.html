@@ -26,14 +26,13 @@
       }
 
       .area {
-        fill: #FF9933;
+        fill: #000066;
         clip-path: url(#clip);
       }
       .axis path,
       .axis line {
         fill: none;
         stroke: #121401;
-        stroke-width: 2px;
         shape-rendering: crispEdges;
       }
 
@@ -46,6 +45,10 @@
         opacity: .5;
       }
 
+      .x.axis{
+        font: 9px sans-serif;
+        color: #121401;
+      }
       .y.axis {
         font: 9px sans-serif;
         color: #121401;
@@ -55,8 +58,20 @@
         stroke: #fff;
         fill-opacity: .125;
         shape-rendering: crispEdges;
-
       }
+
+      .axis2 path,
+      .axis2 line {
+        fill: none;
+        stroke: #121401;
+        stroke-width: 2px;
+        shape-rendering: crispEdges;
+      }
+      .y.axis2 {
+        font: 9px sans-serif;
+        color: #121401;
+      }
+
 </style>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -113,9 +128,9 @@
 <p style="text-align: center;">
     <script src="ukpetrol.js" charset="utf-8"></script>
 </p>
-  <chart1></chart1>
+<p class="chart1"></p>
 <p style="text-align: center;">
   <script src="ukdrivers.js" charset="utf-8"></script>
 </p>
-<chart2></chart2>
+<p class="chart2"></p>
 </div>

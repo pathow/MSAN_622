@@ -52,7 +52,7 @@ var context = svg.append("g")
 d3.csv("ukgas.csv", type, function(error, data) {
   console.log(data)
   x.domain(d3.extent(data.map(function(d) { return d.date; })));
-  main_y.domain([0, d3.max(data.map(function(d) { return d.price; }))]);
+  main_y.domain([0, d3.max(data.map(function(d) { return d.price; }))]).nice();
   x2.domain(x.domain());
   y2.domain(main_y.domain());
 
@@ -68,7 +68,13 @@ d3.csv("ukgas.csv", type, function(error, data) {
 
   focus.append("g")
       .attr("class", "y axis")
-      .call(yAxis);
+      .call(yAxis)
+      .append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 6)
+              .attr("dy", ".71em")
+              .style("text-anchor", "end")
+              .text("Petrol Prices");
 
   context.append("path")
       .datum(data)
