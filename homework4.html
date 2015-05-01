@@ -58,15 +58,27 @@
 </div>
 
 <div class="container">
-	<h1>Tableau!!!!</h1>
+	<h1>Breakdown of Movies from GGplot2</h1>
 <script type='text/javascript' src='https://public.tableau.com/javascripts/api/viz_v1.js'></script><div class='tableauPlaceholder' style='width: 904px; height: 742px;'><noscript><a href='#'><img alt='Dashboard 1 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Mo&#47;Movies_Dashboard&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' width='904' height='742' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='site_root' value='' /><param name='name' value='Movies_Dashboard&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Mo&#47;Movies_Dashboard&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='showVizHome' value='no' /><param name='showTabs' value='y' /><param name='bootstrapWhenNotified' value='true' /></object></div>
 </div>
 
+<h2>Data Preprocessing</h2>
 <p>
-	I implemented the dashboard form of three charts in Tableau.
+	My main method of data processing was within R. To reduce the dimensionality to something more manageable for Tableau, I subsetted the data based on only taking those rows that had an MPAA rating. This made the entire dataset only about ~5000 rows of movies.
+</p>
+
+<h2>Functionality</h2>
+<p>
+	C-Level: This is a Tableau dashboard.
+</p>
+
+<h2>Discussion of Functionality</h2>
+<p>
+	I implemented the dashboard form of three charts in Tableau, mostly based on numeric and readily quantified dimensions of the data. The first chart is a box-and-whisker plot of user ratings broken down by MPAA ratings. The second is a bar chart reflecting the counts of movies under each MPAA rating. The bottom chart is a scatterplot showing the number of user votes against the average user rating of a movie.
+
+	I explored moving on to D3 versions of these plots, but it turned out that box plots are much more difficult to implement in D3 than I had anticipated. So I'm happy with simply having the Tableau versions
 </p>
 
 </div>
-
 </body>
 
