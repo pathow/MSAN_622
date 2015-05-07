@@ -12,10 +12,58 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
 
+
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <style type="text/css">
+        body {
+            padding-top: 50px;
+            padding-bottom: 20px;
+        }
+    </style>
+
  </head>
 
 <body>
+<!-- Fixed Navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">MSN 622</a>
+        </div>
 
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#homework">Homework</a></li>
+                <li><a href="#project">Project</a></li>
+                <li><a href="#participation">Participation</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Earthquake Visualization</h1>
+        <h2>Homework 5</h2>
+    </div>
+</div>
+
+<div class="container">
 <div id="block">
 <svg id="map" width="940" height="640"></svg>
 <p id="log">Loading map... please wait.</p>
@@ -68,6 +116,22 @@ d3.json(url.world, function(mapError, mapJSON) {
 // );
 
 </script>
+
+<h2>Functionality</h2>
+<p>
+    <ul>
+        <li>C level: Following the instructions in class, this map shows earthquakes with circles that have dynamic radiuses based on the magnitude of the earthquake.</li>
+        <li>B level: Incorporated data on depth of the earthquake as a color scheme for the bubbles, using a thresholded color scheme</li>
+    </ul>
+</p>
+
+<h2>Interactivity Guide</h2>
+<p>
+    The main interactivity of this map are hover-overs that change in two main ways: 1. hovering over a circle changes its color that is highlighted; and 2. this also updates the text at the bottom of the map with the data information for that specific point.
+</p>
+
+<p>Patrick Howell; <a href="https://github.com/pathow">GitHub</p>
+</div>
 
 </body>
 </html>

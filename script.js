@@ -44,7 +44,10 @@ function symbolMap() {
 
 
     var projection = d3.geo.mercator();
-        
+
+    var color = d3.scale.threshold()
+    .domain([30, 60, 120, 240])
+    .range(["#FBC3C8","#F88792","#F00E23","#B40A1A","#780712"]);
 
     var radius = d3.scale.sqrt().range([5, 15]);
 
@@ -122,6 +125,8 @@ function symbolMap() {
             .data(values)
             .enter()
             .append("circle")
+            .attr("fill", function(d){return color(d.depth);})
+            .attr("fill-opacity", "0.75")
             .attr("r", function(d, i) {
                 return radius(value(d));
             })
@@ -133,6 +138,7 @@ function symbolMap() {
             .attr("cy", function(d, i) {
                 return projection([d.longitude, d.latitude])[1];
             })
+            
             .classed({"symbol": true})
             .on("mouseover", showHighlight)
             .on("mouseout", hideHighlight);

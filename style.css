@@ -40,10 +40,10 @@ svg {
  */
 
 .symbol {
-    fill: royalblue;
-    fill-opacity: 0.25;
+/*    fill: royalblue;
+    fill-opacity: 0.25;*/
 
-    stroke: royalblue;
+    stroke: "red";
     stroke-width: 1px;
     stroke-opacity: 1.0;
 }
@@ -54,7 +54,7 @@ svg {
  */
 
 circle.highlight {
-    stroke: orangered;
+    stroke: #4CD6C9;
     stroke-width: 2px;
 }
 
