@@ -4,15 +4,19 @@
     <meta charset="utf-8">
     <title>Project Prototype</title>
     <link rel="stylesheet" href="d3.slider-master/d3.slider.css" /> 
+    <link rel="stylesheet" href="button_slide.css" /> 
     <style>
       #wrapper {
           width: 960px;
+          height: 580px;
           margin: -50px auto;
       }
-      #map {
+      #map,#map2 {
           width: 960px;
-          height: 580px;
+          height: 540px;
           position: relative;
+          padding:10px;
+          margin-top: -80px;
       }
       .stroke {
         fill: none;
@@ -43,23 +47,26 @@
       .country {
           stroke: white;
       }
-      #play, #clock {
-        position: absolute;
-        top: 15px;
+      .country2 {
+          stroke: white;
       }
-      #play {
-        left: 15px;
+      #clock, #clock2 {
+        float:left;
+        font: 200 48px "Helvetica Neue";
+        color: #999999;
+        left: 65px;
+        margin-top: -30px;
       }
-      #clock {
+  
+      #plottitle {
+      text-align: center;
       font: 200 48px "Helvetica Neue";
       color: #999999;
       left: 65px;
+      margin-bottom:60px;
       }
-      #plottitle {
-      text-align: center;
-      font: 200 64px "Helvetica Neue";
-      color: #999999;
-      left: 65px;
+      #dumbslider{
+        margin-top: 10px
       }
 
       div.tooltip {   
@@ -74,18 +81,50 @@
         border-radius: 8px;           
         pointer-events: none;         
       }   
+
+      div.tooltip2 {   
+        position: absolute;           
+        text-align: center;           
+        width: 200px;                  
+        height: 24px;                 
+        padding: 2px;             
+        font-size: 12px;     
+        background: #FFFFE0;
+        border: 1px;      
+        border-radius: 8px;           
+        pointer-events: none;         
+      }   
     </style>
 </head>
 
 <body>
-<h1 id="plottitle">Economic Crises over Time by Country</h1>
-  <div id="wrapper">  
-      <div id="map">
-          <div id="clock">year</div>
-      </div>
-      <div id="dumbslider"></div>
-  </div>
+<h1 id="plottitle">Economic Crises and Militarized Disputes<br>over Time by Country</h1>
 
+
+  <div id="wrapper">  
+
+      <div id="map">
+          <div class="onoffswitch">
+      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+      <label class="onoffswitch-label" for="myonoffswitch">
+          <span class="onoffswitch-inner"></span>
+          <span class="onoffswitch-switch"></span>
+      </label>
+      </div>
+    
+        <div id="clock">year</div>
+      </div>
+  <div id="dumbslider"></div>    
+  </div>
+<!-- <p><br><br><br></p>
+  <h1 id="plottitle">Militarized Disputes over Time by Country</h1>
+  <div id="wrapper">  
+      <div id="map2">
+        <div id="clock2">year</div>
+      </div>
+      <div id="dumbslider2"></div>
+  </div>
+ -->
 
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -94,201 +133,18 @@
 <script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 
-<script>
-  //globals
-var width, height, projection, path, graticule, svg, datayear=1816, attributeArray = [], currentAttribute = 0, playing = false;
+<script src="econ_map.js"></script>
+<!-- <script src="mil_map.js"></script> -->
+<p><br><br><br></p>
 
+<h2>Dataset Summary</h2>
+<p>
+    The data plotted onto the prototype map above are pulled from two distinct sources. First, the economic crises data is taken from the work of the economists Reinhart and Rogoff, specifically, their 2010 book "This Time is Different" on various types of economic crises. The militarized disputes data is pulled from a larger data project known as the Correlates of War, a well known and widely used dataset in political science academia. One thing I actually noticed is that since I first worked with this data on my thesis ~2 years ago, there has been a new release of the CoW dataset that covers up to 2014. If I have time before the final project is due, I may go back and recreate the data for a wider time range.
+<p>
 
-
-
-function init() {
-
-  setMap();
-
-}
-
-function setMap() {
-
-  
-
-  width = 960, height = 580;  // map width and height, matches 
-
-  projection = d3.geo.eckert5()   // define our projection with parameters
-    .scale(170)
-    .translate([width / 2, height / 2])
-    .precision(.1);
-
-  path = d3.geo.path()  // create path generator function
-      .projection(projection);  // add our define projection to it
-
-  graticule = d3.geo.graticule(); // create a graticule
-
-  
-
-  svg = d3.select("#map").append("svg")   // append a svg to our html div to hold our map
-      .attr("width", width)
-      .attr("height", height);
-
-  svg.append("defs").append("path")   // prepare some svg for outer container of svg elements
-      .datum({type: "Sphere"})
-      .attr("id", "sphere")
-      .attr("d", path);
-
-  svg.append("use")   // use that svg to style with css
-      .attr("class", "stroke")
-      .attr("xlink:href", "#sphere");
-
-  svg.append("path")    // use path generator to draw a graticule
-      .datum(graticule)
-      .attr("class", "graticule")
-      .attr("d", path);
-  
-
-  loadData();  // let's load our data next
-
-}
-
-function loadData() {
-
-  queue()   // queue function loads all external data files asynchronously 
-    .defer(d3.json, "countries.topo.json")  // our geometries
-    .defer(d3.csv, "ts_econ.csv")  // and associated data in csv file
-    .defer(d3.json, "econ_breakdown.json")
-    .await(processData);   // once all files are loaded, call the processData function passing
-                           // the loaded objects as arguments
-}
-
-function processData(error,world,countryData,crisisData) {
-  // function accepts any errors from the queue function as first argument, then
-  // each data object in the order of chained defer() methods above
-
-  var countries = world.objects.countries.geometries;  // store the path in variable for ease
-  for (var i in countries) {    // for each geometry object
-    for (var j in countryData) {  // for each row in the CSV
-      //console.log(countryData[j].country)
-      if(countries[i].properties.name == countryData[j].country) {   // if they match
-        for(var k in countryData[i]) {   // for each column in the a row within the CSV
-          if(k != 'name' && k != 'country') {  // let's not add the name or id as props since we already have them
-            if(attributeArray.indexOf(k) == -1) { 
-               attributeArray.push(k);  // add new column headings to our array for later
-            }
-            countries[i].properties[k] = Number(countryData[j][k])  // add each CSV column key/value to geometry object
-          } 
-        }
-        break;  // stop looking through the CSV since we made our match
-      }
-    }
-  }
-  
-  d3.select('#dumbslider').call(d3.slider().axis(true).min(1816).max(2001).step(1).value(datayear).on("slide", function(evt, value) {
-      var datayear = value;
-      d3.select('#clock').html(datayear);
-      drawMap(world, datayear, crisisData[datayear]); 
-        }));
-  d3.select('#clock').html(datayear);
-      drawMap(world, datayear, crisisData[datayear]); 
-    // populate the clock initially with the current year
-   // let's mug the map now with our newly populated data object
-}
-
-
-
-function drawMap(world, datayear, crisisyear) {
-
-
-    var div = d3.select("#map").append("div")   
-      .attr("class", "tooltip")               
-      .style("opacity", 0);
-
-    svg.selectAll(".country")   // select country objects (which don't exist yet)
-      .data(topojson.feature(world, world.objects.countries).features)  // bind data to these non-existent objects
-      .enter().append("path") // prepare data to be appended to paths
-      .attr("class", "country") // give them a class for styling and access later
-      .attr("id", function(d) { return "code_" + d.properties.id; }, true)  // give each a unique id for access later
-      .attr("d", path); // create them using the svg path generator defined above
-        
-
-    var dataRange = [0,7]; // get the min/max values from the current year's range of data values
-    d3.selectAll('.country')  // select all the countries
-    .attr("fill", function(d) { return (d.properties[datayear] > 0 ? "red" : "#9A2EFE"); })
-    .attr('fill-opacity', function(d) {
-        return getColor(d.properties[datayear], dataRange);  // give them an opacity value based on their current value
-    })
-    //Adding mouseevents
-      .on("mouseover", function(d) {
-        if(d.properties[datayear]>=0 & typeof crisisyear[d.properties.name].banking != 'undefined'){
-            d3.select(this).transition().duration(300).style("opacity", 1);
-            div.transition().duration(300)
-            .style("opacity", 1)
-            div.html(d.properties.name + " -- " + datayear + " Crises<br>Banking: "+ crisisyear[d.properties.name].banking +
-                                                                           "<br>Inflation: "+ crisisyear[d.properties.name].inflation +
-                                                                           "<br>Domestic Debt: "+ crisisyear[d.properties.name].domdebt +
-                                                                           "<br>External Debt: "+ crisisyear[d.properties.name].extdebt +
-                                                                           "<br>Currency: "+ crisisyear[d.properties.name].currency +
-                                                                           "<br>Stock Market: "+ crisisyear[d.properties.name].stockmarket)
-            .style("left", (d3.event.pageX-125) + "px")
-            .style("top", (d3.event.pageY-125) + "px")};
-          })
-      .on("mouseout", function() {
-        d3.select(this)
-        .transition().duration(300)
-        .style("opacity", 0.8);
-        div.transition().duration(300)
-        .style("opacity", 0);
-      });
-
-}
-
-// function sequenceMap() {
-  
-//     var dataRange = [0,7]; // get the min/max values from the current year's range of data values
-//     d3.selectAll('.country').transition()  //select all the countries and prepare for a transition to new values
-//       .duration(250)  // give it a smooth time period for the transition
-//       .attr("fill", function(d) { return (d.properties[datayear] > 0 ? "red" : "#9A2EFE"); })
-//       .attr('fill-opacity', function(d) {
-//         return getColor(d.properties[datayear], dataRange);  // the end color value
-//       })
-
-// }
-
-function getColor(valueIn, valuesIn) {
-
-  var color = d3.scale.linear() // create a linear scale
-    .domain([valuesIn[0],valuesIn[1]])  // input uses min and max values
-    .range([.25,1]);   // output for opacity between .3 and 1 %
-
-  if(valueIn >= 0){
-  return color(valueIn);
-  } else {
-    return 0.05
-  }  // return that number to the caller
-}
-
-// function getDataRange() {
-//   // function loops through all the data values from the current data attribute
-//   // and returns the min and max values
-
-//   var min = Infinity, max = -Infinity;  
-//   d3.selectAll('.country')
-//     .each(function(d,i) {
-//       var currentValue = d.properties[datayear];
-//       if(currentValue <= min && currentValue != -99 && currentValue != -1) {
-//         min = currentValue;
-//       }
-//       if(currentValue >= max && currentValue != -99 && currentValue != -1) {
-//         max = currentValue;
-//       }
-//   });
-//   return [min,max];  //boomsauce
-// }
-
-
-
-
-window.onload = init();  // magic starts here
-
-    
-  
-</script>
+<h2>Sketch Summary</h2>
+<p>
+    As mentioned in my project sketch last week, one of my main goals was to develop a clean an intuitive method of geographically representing this intersection of economic and military crises onto a world map. My (ambitious) plan on the sketch was to make some kind of linked view plot where highlighting a country would pull up a breakdown of other plots on these crises. I did not accomplish that in and of itself (although some of that functionality is just represented with text popups on the current map), my ambition shifted to making a flexible and interactive representation, and I accomplished just that in this prototype phase. Now its functionality is a time-based slider to control the year being examined, and to switch back and forth between economic crises and militarized disputes on the fly via a button interface. My sketch can be found at: <a href="http://pathow.github.io/MSAN_622/project/proj_sketch.html">Project Sketch</a>
+<p>
 </body>
 </html>
