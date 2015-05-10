@@ -15,10 +15,10 @@ function setMap() {
 
   
 
-  width = 960, height = 500;  // map width and height, matches 
+  width = 900, height = 480;  // map width and height, matches 
 
   projection = d3.geo.eckert5()   // define our projection with parameters
-    .scale(170)
+    .scale(160)
     .translate([width / 2, height / 2])
     .precision(.1);
 
