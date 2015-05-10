@@ -197,12 +197,12 @@ function getColor(valueIn, valuesIn) {
 
   var color = d3.scale.linear() // create a linear scale
     .domain([valuesIn[0],valuesIn[1]])  // input uses min and max values
-    .range([.25,1]);   // output for opacity between .3 and 1 %
+    .range([.3,1]);   // output for opacity between .3 and 1 %
 
   if(valueIn >= 0){
   return color(valueIn);
   } else {
-    return 0.05
+    return 0.15
   }  // return that number to the caller
 }
 
@@ -211,12 +211,12 @@ function getColor2(valueIn, valuesIn) {
 
   var color = d3.scale.linear() // create a linear scale
     .domain([valuesIn[0],valuesIn[1]])  // input uses min and max values
-    .range([.25,1]);   // output for opacity between .3 and 1 %
+    .range([.3,1]);   // output for opacity between .3 and 1 %
 
   if(valueIn >= 0){
   return color(valueIn);
   } else {
-    return 0.05
+    return 0.15
   }  // return that number to the caller
 }
 
