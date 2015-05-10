@@ -179,8 +179,8 @@ function drawMap(world, datayear, crisisyear) {
                                                                            "<br>External Debt: "+ crisisyear[d.properties.name].extdebt +
                                                                            "<br>Currency: "+ crisisyear[d.properties.name].currency +
                                                                            "<br>Stock Market: "+ crisisyear[d.properties.name].stockmarket)
-            .style("left", (d3.event.pageX-125) + "px")
-            .style("top", (d3.event.pageY-125) + "px")};
+            .style("left", (d3.event.pageX-170) + "px")
+            .style("top", (d3.event.pageY-170) + "px")};
           })
       .on("mouseout", function() {
         d3.select(this)
@@ -248,8 +248,8 @@ function drawMap2(world, datayear, crisisyear) {
             div.transition().duration(300)
             .style("opacity", 1)
             div.html(d.properties.name + " -- " + datayear + "<br>Militarized Disputes: "+ d.properties[datayear])
-            .style("left", (d3.event.pageX-125) + "px")
-            .style("top", (d3.event.pageY-125) + "px")};
+            .style("left", (d3.event.pageX-150) + "px")
+            .style("top", (d3.event.pageY-150) + "px")};
           })
       .on("mouseout", function() {
         d3.select(this)
