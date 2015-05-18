@@ -149,7 +149,7 @@ function processData(error, world, world2, econData, milData, crisisData) {
 
 function drawMap(world, datayear, crisisyear) {
 
-    var div = d3.select("#map").append("div")   
+    var datatip = d3.select("#map").append("div")   
       .attr("class", "tooltip")               
       .style("opacity", 0);
 
@@ -171,9 +171,9 @@ function drawMap(world, datayear, crisisyear) {
       .on("mouseover", function(d) {
         if(d.properties[datayear]>=0 & typeof crisisyear[d.properties.name].banking != 'undefined'){
             d3.select(this).transition().duration(300).style("opacity", 1);
-            div.transition().duration(300)
+            datatip.transition().duration(300)
             .style("opacity", 1)
-            div.html(d.properties.name + " -- " + datayear + " Crises<br>Banking: "+ crisisyear[d.properties.name].banking +
+            datatip.html(d.properties.name + " -- " + datayear + " Crises<br>Banking: "+ crisisyear[d.properties.name].banking +
                                                                            "<br>Inflation: "+ crisisyear[d.properties.name].inflation +
                                                                            "<br>Domestic Debt: "+ crisisyear[d.properties.name].domdebt +
                                                                            "<br>External Debt: "+ crisisyear[d.properties.name].extdebt +
@@ -186,7 +186,7 @@ function drawMap(world, datayear, crisisyear) {
         d3.select(this)
         .transition().duration(300)
         .style("opacity", 0.8);
-        div.transition().duration(300)
+        datatip.transition().duration(300)
         .style("opacity", 0);
       });
 
@@ -223,7 +223,7 @@ function getColor2(valueIn, valuesIn) {
 function drawMap2(world, datayear, crisisyear) {
 
 
-    var div = d3.select("#map").append("div")   
+    var datatip2 = d3.select("#map").append("div")   
       .attr("class", "tooltip2")               
       .style("opacity", 0);
 
@@ -245,9 +245,9 @@ function drawMap2(world, datayear, crisisyear) {
       .on("mouseover", function(d) {
         if(d.properties[datayear]>=0){
             d3.select(this).transition().duration(300).style("opacity", 1);
-            div.transition().duration(300)
+            datatip2.transition().duration(300)
             .style("opacity", 1)
-            div.html(d.properties.name + " -- " + datayear + "<br>Militarized Disputes: "+ d.properties[datayear])
+            datatip2.html(d.properties.name + " -- " + datayear + "<br>Militarized Disputes: "+ d.properties[datayear])
             .style("left", (d3.event.pageX-150) + "px")
             .style("top", (d3.event.pageY-150) + "px")};
           })
@@ -255,7 +255,7 @@ function drawMap2(world, datayear, crisisyear) {
         d3.select(this)
         .transition().duration(300)
         .style("opacity", 0.8);
-        div.transition().duration(300)
+        datatip2.transition().duration(300)
         .style("opacity", 0);
       });
 

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Project Prototype</title>
+    <link rel="stylesheet" href="d3.slider-master/d3.slider.css" /> 
+    <link rel="stylesheet" href="button_slide.css" /> 
+    <style>
+      .axis1 path,
+      .axis1 line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+      }
+
+      .dot {
+        stroke: #000;
+      }
+
+      .information {
+        position: absolute;
+        width: 200px;
+        height: 28px;
+        pointer-events: none;
+      }
+
+      #wrapper3 {
+          width: 900px;
+          height: 520px;
+          margin: -50px auto;
+          margin-bottom: 30px;
+      }
+      #map,#map2 {
+          width: 960px;
+          height: 540px;
+          position: relative;
+          padding:10px;
+          margin-top: -80px;
+      }
+      .stroke {
+        fill: none;
+        stroke: #888;
+        stroke-width: 2px;
+      }
+      
+      .fill {
+        fill: #fff;
+      }
+      
+      .graticule {
+        fill: none;
+        stroke: #777;
+        stroke-width: .5px;
+        stroke-opacity: 0.1;
+      }
+      
+      .land {
+        fill: #222;
+      }
+      
+      .boundary {
+        fill: none;
+        stroke: #fff;
+        stroke-width: .5px;
+      }
+      .country {
+          stroke: white;
+      }
+      .country2 {
+          stroke: white;
+      }
+      #clock, #clock2 {
+        float:left;
+        font: 200 48px "Helvetica Neue";
+        color: #999999;
+        left: 65px;
+        margin-top: -15px;
+      }
+  
+      #plottitle {
+      text-align: center;
+      font: 200 40px "Helvetica Neue";
+      color: #999999;
+      left: 65px;
+      margin-bottom:45px;
+      }
+      #dumbslider{
+        margin-top: -10px;
+        margin-bottom: 10px;
+      }
+
+      .tooltip {   
+        position: absolute;           
+        text-align: center;           
+        width: 240px;                  
+        height: 130px;                 
+        padding: 2px;             
+        font-size: 16px;     
+        background: #FFFFE0;
+        border: 1px;      
+        border-radius: 8px;           
+        pointer-events: none;         
+      }   
+
+      .tooltip2 {   
+        position: absolute;           
+        text-align: center;           
+        width: 200px;                  
+        height: 35px;                 
+        padding: 2px;             
+        font-size: 16px;     
+        background: #FFFFE0;
+        border: 1px;      
+        border-radius: 8px;           
+        pointer-events: none;         
+      }   
+    </style>
+</head>
+
+<body>
+
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="d3.slider-master//d3.slider.js"></script>
+<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+
+
+  <div id = "wrapper1">
+  </div>
+
+<h1 id="plottitle">Economic Crises and Militarized Disputes<br>over Time by Country</h1>
+
+
+  <div id="wrapper3">  
+
+      <div id="map">
+          <div class="onoffswitch">
+      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+      <label class="onoffswitch-label" for="myonoffswitch">
+          <span class="onoffswitch-inner"></span>
+          <span class="onoffswitch-switch"></span>
+      </label>
+      </div>
+    
+        <div id="clock">year</div>
+      </div>
+  <div id="dumbslider"></div>    
+  </div>
+
+  <script src="econ_map.js"></script>
+<!-- <p><br><br><br></p>
+  <h1 id="plottitle">Militarized Disputes over Time by Country</h1>
+  <div id="wrapper">  
+      <div id="map2">
+        <div id="clock2">year</div>
+      </div>
+      <div id="dumbslider2"></div>
+  </div>
+ -->
+
+
+
+<!-- <script src="mil_map.js"></script> -->
+<p><br><br><br></p>
+
+<h2>Dataset Summary</h2>
+<p>
+    The data plotted onto the prototype map above are pulled from two distinct sources. First, the economic crises data is taken from the work of the economists Reinhart and Rogoff, specifically, their 2010 book "This Time is Different" on various types of economic crises. The militarized disputes data is pulled from a larger data project known as the Correlates of War, a well known and widely used dataset in political science academia. One thing I actually noticed is that since I first worked with this data on my thesis ~2 years ago, there has been a new release of the CoW dataset that covers up to 2014. If I have time before the final project is due, I may go back and recreate the data for a wider time range.
+<p>
+
+<h2>Sketch Summary</h2>
+<p>
+    As mentioned in my project sketch last week, one of my main goals was to develop a clean an intuitive method of geographically representing this intersection of economic and military crises onto a world map. My (ambitious) plan on the sketch was to make some kind of linked view plot where highlighting a country would pull up a breakdown of other plots on these crises. I did not accomplish that in and of itself (although some of that functionality is just represented with text popups on the current map), my ambition shifted to making a flexible and interactive representation, and I accomplished just that in this prototype phase. Now its functionality is a time-based slider to control the year being examined, and to switch back and forth between economic crises and militarized disputes on the fly via a button interface. My sketch can be found at: <a href="http://pathow.github.io/MSAN_622/project/proj_sketch.html">Project Sketch</a>
+<p>
+</body>
+</html>
