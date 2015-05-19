@@ -6,8 +6,14 @@
     <link rel="stylesheet" href="d3.slider-master/d3.slider.css" /> 
     <link rel="stylesheet" href="button_slide.css" /> 
     <style>
-      .axis1 path,
-      .axis1 line {
+      .tsline {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+      }
+
+      .axis path,
+      .axis line {
         fill: none;
         stroke: #000;
         shape-rendering: crispEdges;
@@ -22,6 +28,14 @@
         width: 200px;
         height: 28px;
         pointer-events: none;
+      }
+
+      #wrapper1{
+        text-align: center;
+      }
+
+      #wrapper2{
+        text-align: center;
       }
 
       #wrapper3 {
@@ -95,8 +109,9 @@
         width: 240px;                  
         height: 130px;                 
         padding: 2px;             
-        font-size: 16px;     
-        background: #FFFFE0;
+        font-size: 16px; 
+        color: #FFFFFF;    
+        background: #333333;
         border: 1px;      
         border-radius: 8px;           
         pointer-events: none;         
@@ -108,8 +123,9 @@
         width: 200px;                  
         height: 35px;                 
         padding: 2px;             
-        font-size: 16px;     
-        background: #FFFFE0;
+        font-size: 16px;
+        color: #FFFFFF;       
+        background: #333333;
         border: 1px;      
         border-radius: 8px;           
         pointer-events: none;         
@@ -126,11 +142,14 @@
 <script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 
-
   <div id = "wrapper1">
   </div>
 
-<h1 id="plottitle">Economic Crises and Militarized Disputes<br>over Time by Country</h1>
+<h1 id="plottitle">Average Crises per Year (by Country)</h1>
+  <div id = "wrapper2">
+  </div>
+
+<h1 id="plottitle">Economic Crises and Militarized Disputes<br>over Time, Geographically</h1>
 
 
   <div id="wrapper3">  
@@ -149,7 +168,10 @@
   <div id="dumbslider"></div>    
   </div>
 
+  
   <script src="econ_map.js"></script>
+  <script src="scatter.js"></script>
+  <script src="total_ts.js"></script>
 <!-- <p><br><br><br></p>
   <h1 id="plottitle">Militarized Disputes over Time by Country</h1>
   <div id="wrapper">  

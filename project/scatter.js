@@ -26,14 +26,14 @@ var yValue = function(d) { return d.economic;}, // data -> value
 //     color = d3.scale.category10();
 
 // add the graph canvas to the body of the webpage
-var svg2 = d3.select("#wrapper1").append("svg")
+var svg2 = d3.select("#wrapper2").append("svg")
     .attr("width", width2 + margin2.left + margin2.right)
     .attr("height", height2 + margin2.top + margin2.bottom)
   .append("g")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
 // add the tooltip area to the webpage
-var information = d3.select("#wrapper1").append("div")
+var information = d3.select("#wrapper2").append("div")
     .attr("class", "information")
     .style("opacity", 0);
 
@@ -53,7 +53,7 @@ d3.csv("combined.csv", function(error, data) {
 
   // x-axis
   svg2.append("g")
-      .attr("class", "x axis1")
+      .attr("class", "x axis")
       .attr("transform", "translate(0," + height2 + ")")
       .call(xAxis)
     .append("text")
@@ -65,7 +65,7 @@ d3.csv("combined.csv", function(error, data) {
 
   // y-axis
   svg2.append("g")
-      .attr("class", "y axis1")
+      .attr("class", "y axis")
       .call(yAxis)
     .append("text")
       .attr("class", "label")
@@ -90,7 +90,7 @@ d3.csv("combined.csv", function(error, data) {
                .style("opacity", .9);
           information.html(d.country + "<br/> (" + xValue(d).toFixed(2)
 	        + ", " + yValue(d).toFixed(2) + ")")
-               .style("left", (d3.event.pageX + 5) + "px")
+               .style("left", (d3.event.pageX - 25) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
       })
       .on("mouseout", function(d) {
@@ -98,26 +98,4 @@ d3.csv("combined.csv", function(error, data) {
                .duration(500)
                .style("opacity", 0);
       });
-
-  // // draw legend
-  // var legend = svg.selectAll(".legend")
-  //     .data(color.domain())
-  //   .enter().append("g")
-  //     .attr("class", "legend")
-  //     .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-
-  // // draw legend colored rectangles
-  // legend.append("rect")
-  //     .attr("x", width - 18)
-  //     .attr("width", 18)
-  //     .attr("height", 18)
-  //     .style("fill", color);
-
-  // // draw legend text
-  // legend.append("text")
-  //     .attr("x", width - 24)
-  //     .attr("y", 9)
-  //     .attr("dy", ".35em")
-  //     .style("text-anchor", "end")
-  //     .text(function(d) { return d;})
 });

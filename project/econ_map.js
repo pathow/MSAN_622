@@ -33,6 +33,14 @@ function setMap() {
       .attr("width", width)
       .attr("height", height);
 
+  svg.append("text")
+      .attr("x", 450)
+      .attr("y", 420)
+      .attr("text-anchor", "middle") 
+      .style("font-style", "italic")
+      .text("Dark Purple = 0 crises; Light Purple = Country not in data");
+
+
   svg.append("defs").append("path")   // prepare some svg for outer container of svg elements
       .datum({type: "Sphere"})
       .attr("id", "sphere")
@@ -179,8 +187,8 @@ function drawMap(world, datayear, crisisyear) {
                                                                            "<br>External Debt: "+ crisisyear[d.properties.name].extdebt +
                                                                            "<br>Currency: "+ crisisyear[d.properties.name].currency +
                                                                            "<br>Stock Market: "+ crisisyear[d.properties.name].stockmarket)
-            .style("left", (d3.event.pageX-170) + "px")
-            .style("top", (d3.event.pageY-170) + "px")};
+            .style("left", d3.select(this).attr("cx") + "px")
+            .style("top", d3.select(this).attr("cy")+300+ "px")};
           })
       .on("mouseout", function() {
         d3.select(this)
@@ -248,8 +256,8 @@ function drawMap2(world, datayear, crisisyear) {
             datatip2.transition().duration(300)
             .style("opacity", 1)
             datatip2.html(d.properties.name + " -- " + datayear + "<br>Militarized Disputes: "+ d.properties[datayear])
-            .style("left", (d3.event.pageX-150) + "px")
-            .style("top", (d3.event.pageY-150) + "px")};
+            .style("left", d3.select(this).attr("cx") + "px")
+            .style("top", d3.select(this).attr("cy")+300+ "px")};
           })
       .on("mouseout", function() {
         d3.select(this)
