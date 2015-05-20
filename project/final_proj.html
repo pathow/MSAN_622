@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Project Prototype</title>
+    <title>Final Project -- MSAN 622</title>
     <link rel="stylesheet" href="d3.slider-master/d3.slider.css" /> 
     <link rel="stylesheet" href="button_slide.css" /> 
     <style>
@@ -142,12 +142,17 @@
 <script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 
+  <h1 id="plottitle">Global Totals of Military and Economic Crises by Year</h1>
   <div id = "wrapper1">
   </div>
+
+  <p><br><br></p>
 
 <h1 id="plottitle">Average Crises per Year (by Country)</h1>
   <div id = "wrapper2">
   </div>
+
+<p><br><br></p>
 
 <h1 id="plottitle">Economic Crises and Militarized Disputes<br>over Time, Geographically</h1>
 
@@ -185,16 +190,70 @@
 
 
 <!-- <script src="mil_map.js"></script> -->
-<p><br><br><br></p>
+<p><br><br><br><br></p>
 
-<h2>Dataset Summary</h2>
+<h2>Techniques</h2>
 <p>
-    The data plotted onto the prototype map above are pulled from two distinct sources. First, the economic crises data is taken from the work of the economists Reinhart and Rogoff, specifically, their 2010 book "This Time is Different" on various types of economic crises. The militarized disputes data is pulled from a larger data project known as the Correlates of War, a well known and widely used dataset in political science academia. One thing I actually noticed is that since I first worked with this data on my thesis ~2 years ago, there has been a new release of the CoW dataset that covers up to 2014. If I have time before the final project is due, I may go back and recreate the data for a wider time range.
+    The technique for my first visualization largely mirrored some example time series line charts done by Mike Bostock. Here I aggregated my data as a sum total of every country's number of economic and militarized crises, making a global count for every year. The visual is largely straightforward and simple in its presentation, so there is no issue with the data-ink ratio, but it is not very data dense at the same time either. Slightly more problematic is the lie factor, as there is a hidden layer to the data: the number of both types of crises begin to rise sharply through the 1900s primarily because there were simply more countries entering the international system following the World Wars and colonial independence movements. Thus, it's no surprise that the number of global crises rise too, when a small number of colonial powers are no longer the sole disputants on the international stage. That said, what this visual does excel at is its ability to display the spikes of certain types of crises around years where we would expect them -- i.e. a huge spike in military disputes around 1940, with the outbreak of World War II. I would argue that highlighting these spikes is the main purpose for this graph.
+</p>
 <p>
+    The second visual presented here is a slighly different aggregation than the first, as now the aggregation axes are by individual countries. To best represent this, I elected to show the distinctions between average numbers of economic crises and militarized disputes in the form of a scatter plot. Also like the first plot, the data-ink ratio is fairly high but with a comparatively low data density -- one difference though is that that the lie factor is much less with this second plot, however. Unlike before where the number of crises mask the true number of the population within the data, I have much less of a problem with the potential unequal weighting of points (given that not all countries have existed the same length of time) on this graph, due to this discrepancy being smoothed over by it showing simply a measure of central tendency via the averages. One thing that was suprisingly effective about this graph, too, is the fact that it shows some potentially interesting clustering -- for example, those countries high on economic crises but low on military disputes tend to be post-colonial African countries, while those high on military but low on economic crises are more traditional large powers.
+</p>
 
-<h2>Sketch Summary</h2>
 <p>
-    As mentioned in my project sketch last week, one of my main goals was to develop a clean an intuitive method of geographically representing this intersection of economic and military crises onto a world map. My (ambitious) plan on the sketch was to make some kind of linked view plot where highlighting a country would pull up a breakdown of other plots on these crises. I did not accomplish that in and of itself (although some of that functionality is just represented with text popups on the current map), my ambition shifted to making a flexible and interactive representation, and I accomplished just that in this prototype phase. Now its functionality is a time-based slider to control the year being examined, and to switch back and forth between economic crises and militarized disputes on the fly via a button interface. My sketch can be found at: <a href="http://pathow.github.io/MSAN_622/project/proj_sketch.html">Project Sketch</a>
+    For the last visual, I elected to geo-encode the data into a choropleth map of the world, that can be changed by the user over time. This was accomplished by building an object with master keys for every year, and then sub-elements being the countries available in the data for that given year. The data-ink ratio is fairly balanced, the data density is high, and there is not much lie factor due to the user ability to control what information they are looking at. There is a lot of room for a user to discover their own patterns or trends of interest -- perhaps he/she is most interested in moving through one type of crisis and watching the colors for, say, economic crises, change/spread across the globe, or possibly the interest is more in comparing the economic and military crises to one another, in which case the user could simply toggle back and forth between the two via the button on the same year. 
+</p>
+
+<p><br></p>
+
+<h2>Interactivity</h2>
 <p>
+    There is no direct interactivity implemented on my first plot, but there are some basic forms of interaction available on the second plot. For the scatterplot, hovering over a circle will bring up a small text popup that will inform the user of the country they are looking at, as well as the exact values for both variables at that point. This interactivity is important for two reasons: First, by giving the precise values reduces any guessing by the user's part (reducing lie factor). Second, as a hidden popup, it removes clutter and/or reduces data-ink ratio by not having this information persistently present.
+</p>
+
+<p>
+    The map visualization is naturally quite a bit more complex in the realm of interactivity, and that is where I devoted most of my efforts. There are three forms of interactivity implemented here: the button controlling the toggle between filtering economic and military forms of crises being plotted on the map, the slider controlling the time/year in question at the bottom of the map, and lastly a popup window that displays data a breakdown of data values when the mouse is hovered over a particular country. Most important of all, I put great effort into ensuring that all three of these interactions work in tandem -- i.e., so that a person can move the slider to any year, toggle the filter, and hover over a country in every combination possible. Putting these multiple dimensions of control in the user's hands should allow for a reduction in any lie factor, and make the data-ink and data-density ratios as efficient as possible for this type of choropleth visual.
+</P>
+
+<p><br></p>
+<h2>Feedback</h2>
+<p>
+    I received varying inputs and degrees of feedback on this project, mainly centered on the map visualization, as that was the only visual implemented as of the time of the prototype stage. Every comment received made a salient point, but the main limit on whether or not I adjusted the visual depended mainly on my ability to implement the exact feedback.
+</p>
+
+<p>
+    The easiest feedback to incorporate into the map was largely those concerned with the aesthetics of the map. Suggestions about altering some of the opacities and coloring of the countries, as well as a couple of comments about the over-prevalence of the longitude/latitude gridlines were realistic fixes that I took into account for the final product. A couple of the comments on my prototype submission were experimented with, but ultimately proved a bridge too far for me to implement within the span of this past week (sorry, Sophie!). In particular, there were two main suggestions I tried and failed to implement effectively: First, the suggestion was made on the popups to present some kind of visual instead of raw text for breakdowns -- here I found aesthetics to be the main hindrance. When I tried to create a popup with bar charts, it was difficult to find a proper balance between including enough countext (e.g. axis labels) without making the bar charts too large that they hide too much of the original map. The second suggestion considered was to add in a legend of color scales for the data ranges existing on the map. Here I simply ran out of time in trying to create an effective implementation of the color scales that would also account for the changes in crisis-type toggling, and also showing the different colors of none and missing values in addition to the scale. The point is well-taken though to communicate this information, so my quick-fix compromise was to add in a text note on the map explaining the purple hues as they relate to these null/missing values.
+</p>
+
+<p><br></p>
+
+<h2>Challenges</h2>
+<p>
+    For the first plot, with its time series lines, the main problems I ran into with its creation was making sure that I had data encoded and called in the proper way. In this case, for D3 time series, it is recommended to have JavaScript nested objects that are perhaps 3 or 4 layers deep. As a result, there were a number of times where I was drawing null lines on the plot, simply because I was accidentally calling the wrong layer of the nested data object within my code. Obviously, after a lot of trial and error, I eventually reached the final product shown, but it was nowhere near as simple a task as such a simple plot might show.
+</p>
+
+<p>
+    The primary difficulties I ran into on my second plot was that it was a perfect storm of variable/class conflicts between my other two plots. Things like the axes lines for this type of plot had natural conflicts with the above time series plot, while things like some of the calls for the country points and tooltips ran into a few buggy conflicts with my map visualization below it. Pretty much my approach to fixing this problem was by playing whack-a-mole with the conflicts as they appeared by changing names and calls both in the code and in the CSS styles. The end result works, but I fear that if anyone with an actual eye towards HTML/CSS/JavaScript might recoil in terror at the hideousness of the raw code if they ever "View Source" on the page.
+</p>
+
+<p>
+    Naturally as the most involved visual, the choropleth map has had a number of challenges to overcome over the course of this project. First, I had a number of issues in implementing the base interactivity that is seen. I actually had never implemented a process of filtering/button clicking on any of my prior assignments in this Information Visualization class, so simply incorporating my button to switch back and forth between Economic and Militarized was a bit of a challenge in and of itself. Similarly, adding the slider to control the year being viewed was not a very simple task, especially when taken in tandem with the button toggle. This is because every time it is moved to a new value, a) JavaScript needed to be able to recognize this new value, and b) then the entire map had to be redrawn for the new data-year. The solution to this was largely to wrap up the drawing of the map into two different "DrawMap" functions, depending on the button toggle, which are called every time the slider is moved.
+</p>
+
+<p>
+    The second major difficulty I had on the map visualization was working with the popup information window. Before, when the map was the only element on the page, I had implemented a method where this window followed the mouse movements directly...however, once I had added the two other visuals and this text, there was something wrong with the way the JavaScript was placing the popup (e.g., making it appear in weird places, like maybe ~500 pixels below the map). I tried a few janky fixes to replicate the movement once again, but none of these would be guaranteed to also work in other browsers or window sizes. In the end, I settled on a bit of a compromise -- now the popup window appears in a static location on the map, in the middle of the Pacific Ocean where there's no data overlap, but displays the country-specfic information as the mouse is moved. Of course, there were a number of minor other bugs and challenges that I had to fix over the past couple of weeks (see the Feedback section for a couple more), but overall, these were the two major challenges to creating this map.
+</p>
+
+<p><br></p>
+<h2>Conclusion</h2>
+<p>
+    In the Techniques section above, I touched on a few of the strengths of each particular graph in their ability to convey information about the data, but again to recap -- the time series does best at showing spikes in certain years for both types of crisis; the scatterplot shows reasonable clustering of countries into general "profiles" based on comparing their typical levels of economic vs. military crisese; and finally, the map can show broad aggregate snapshots of information, as specified by the user. Where I see the real power of these visuals in conveying a "story" of the data, though, is their use in conjunction with one another. For example, this is the type of flow I envision being possible with these visuals: 1. Identify a year of interest from the time series lines (say, the spike in economic crises around the 1930s); 2. Go to the map and slide to the year 1930 and toggle to economic crises, searching for countries of interest; 3. Compare if your chosen country(/countries) are following their broad tendency for average yearly crises in the scatterplot.
+</p>
+
+<p>
+    I fully acknowledge that there are improvements that could be made to conveying this type of information through the visuals I have presented here. Given plenty of time, it would have likely been possible to figure out methods of implementing some of the things that were compromised upon (i.e., moving popup windows, color scale legends, etc.). On a similar note, if this was to be packaged for more broader public consumption, I would probably have liked to experimented with a delivery method like the D3 scrolling through plots that are hidden otherwise, as was mentioned as a cool advanced feature in lecture a few weeks ago. Perhaps most promising for me, however, is that these visuals have been made flexible enough that I could easily expand the data coverage with a little extra work -- I originally made this dataset two years ago, where the militarized disputes data had only been released through 2001 thus far, but in the time since, the group responsible has extended this to 2010. Once some of the craziness of the MSAN schedule is but a distant memory, I may very well revisit this with the more up-to-date data and be able to make a fairly cool blog post or something out of all this.
+</p>
+
+
 </body>
 </html>
